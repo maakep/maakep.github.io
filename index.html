@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Randomize</title>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      function shuffleArray(arr) {
+        const array = [...arr];
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
+
+      function getPeople() {
+        const ppl1 = document.getElementById("ppl1").value;
+        const ppl2 = document.getElementById("ppl2").value;
+        const ppl3 = document.getElementById("ppl3").value;
+        const ppl4 = document.getElementById("ppl4").value;
+        const ppl5 = document.getElementById("ppl5").value;
+
+        localStorage.setItem("ppl1", ppl1);
+        localStorage.setItem("ppl2", ppl2);
+        localStorage.setItem("ppl3", ppl3);
+        localStorage.setItem("ppl4", ppl4);
+        localStorage.setItem("ppl5", ppl5);
+
+        return [ppl1, ppl2, ppl3, ppl4, ppl5];
+      }
+
+      function copy() {
+        var peopleArray = getPeople();
+        var shuffledPeople = shuffleArray(peopleArray);
+        var stringifiedShuffle = shuffledPeople.join(" > ");
+        navigator.clipboard.writeText(stringifiedShuffle);
+      }
+    </script>
+  </head>
+  <body>
+    <div class="App">
+      <input type="text" id="ppl1" />
+      <input type="text" id="ppl2" />
+      <input type="text" id="ppl3" />
+      <input type="text" id="ppl4" />
+      <input type="text" id="ppl5" />
+      <button onclick="copy()">Shuffle & copy</button>
+    </div>
+    <script>
+      const ppl1 = document.getElementById("ppl1");
+      const ppl2 = document.getElementById("ppl2");
+      const ppl3 = document.getElementById("ppl3");
+      const ppl4 = document.getElementById("ppl4");
+      const ppl5 = document.getElementById("ppl5");
+
+      ppl1.value = localStorage.getItem("ppl1");
+      ppl2.value = localStorage.getItem("ppl2");
+      ppl3.value = localStorage.getItem("ppl3");
+      ppl4.value = localStorage.getItem("ppl4");
+      ppl5.value = localStorage.getItem("ppl5");
+
+      ppl1.select();
+    </script>
+  </body>
+</html>
