@@ -6,7 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Randomize</title>
     <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="App">
+      <input type="text" id="ppl1" />
+      <input type="text" id="ppl2" />
+      <input type="text" id="ppl3" />
+      <input type="text" id="ppl4" />
+      <input type="text" id="ppl5" />
+      <button id="btn" onclick="copy()">Shuffle & copy</button>
+    </div>
     <script>
+      // Get reference to input HTML elements
+      const ppl1 = document.getElementById("ppl1");
+      const ppl2 = document.getElementById("ppl2");
+      const ppl3 = document.getElementById("ppl3");
+      const ppl4 = document.getElementById("ppl4");
+      const ppl5 = document.getElementById("ppl5");
+
+      // Set the previously copied/saved values (see localStorage.setItem in getPeople())
+      ppl1.value = localStorage.getItem("ppl1");
+      ppl2.value = localStorage.getItem("ppl2");
+      ppl3.value = localStorage.getItem("ppl3");
+      ppl4.value = localStorage.getItem("ppl4");
+      ppl5.value = localStorage.getItem("ppl5");
+
+      // Select the first input field, so user don't need to use mouse
+      ppl1.select();
+
+      // Loop through the array and switch places
+      // with a random position for every item in array
       function shuffleArray(arr) {
         const array = [...arr];
         for (let i = array.length - 1; i > 0; i--) {
@@ -16,28 +45,42 @@
         return array;
       }
 
-      function getPeople() {
-        const ppl1 = document.getElementById("ppl1").value;
-        const ppl2 = document.getElementById("ppl2").value;
-        const ppl3 = document.getElementById("ppl3").value;
-        const ppl4 = document.getElementById("ppl4").value;
-        const ppl5 = document.getElementById("ppl5").value;
+      function getInputValues() {
+        // Get the values in the 5 input fields
+        const input1Value = ppl1.value;
+        const input2Value = ppl2.value;
+        const input3Value = ppl3.value;
+        const input4Value = ppl4.value;
+        const input5Value = ppl5.value;
 
-        localStorage.setItem("ppl1", ppl1);
-        localStorage.setItem("ppl2", ppl2);
-        localStorage.setItem("ppl3", ppl3);
-        localStorage.setItem("ppl4", ppl4);
-        localStorage.setItem("ppl5", ppl5);
+        // Save the 5 values for next time you visit the site
+        localStorage.setItem("ppl1", input1Value);
+        localStorage.setItem("ppl2", input2Value);
+        localStorage.setItem("ppl3", input3Value);
+        localStorage.setItem("ppl4", input4Value);
+        localStorage.setItem("ppl5", input5Value);
 
-        return [ppl1, ppl2, ppl3, ppl4, ppl5];
+        // Return the 5 values as an array
+        return [
+          input1Value,
+          input2Value,
+          input3Value,
+          input4Value,
+          input5Value,
+        ];
       }
 
       function copy() {
-        var peopleArray = getPeople();
-        var shuffledPeople = shuffleArray(peopleArray);
-        var stringifiedShuffle = shuffledPeople.join(" > ");
+        var inputArray = getInputValues();
+        var shuffledInputs = shuffleArray(inputArray);
+        var stringifiedShuffle = shuffledInputs.join(" > ");
+
+        // Ctrl+C
         navigator.clipboard.writeText(stringifiedShuffle);
 
+        // Give user some feedback that the shuffle+copy is done by
+        // changing the button text to "Copied!"
+        // then wait 1 second and turn it back to "Shuffle & copy"
         const btn = document.getElementById("btn");
         btn.innerText = "Copied!";
         setTimeout(() => {
@@ -45,37 +88,12 @@
         }, 1000);
       }
 
+      // If user clicks enter, do the same as the button click
       document.addEventListener("keyup", function (e) {
         if (e.keyCode === 13) {
           copy();
         }
       });
-    </script>
-  </head>
-  <body>
-    <div class="App">
-      <input type="text" id="ppl1" />
-      <input type="text" id="ppl2" />
-      <input type="text" id="ppl3" />
-      <input type="text" id="ppl4" />
-      <input type="text" id="ppl5" />
-      <div style="color: white"><input type="checkbox" /> I hate robots</div>
-      <button id="btn" onclick="copy()">Shuffle & copy</button>
-    </div>
-    <script>
-      const ppl1 = document.getElementById("ppl1");
-      const ppl2 = document.getElementById("ppl2");
-      const ppl3 = document.getElementById("ppl3");
-      const ppl4 = document.getElementById("ppl4");
-      const ppl5 = document.getElementById("ppl5");
-
-      ppl1.value = localStorage.getItem("ppl1");
-      ppl2.value = localStorage.getItem("ppl2");
-      ppl3.value = localStorage.getItem("ppl3");
-      ppl4.value = localStorage.getItem("ppl4");
-      ppl5.value = localStorage.getItem("ppl5");
-
-      ppl1.select();
     </script>
   </body>
 </html>
